@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { DatabaseModule } from './database/database.module';
 import { EmailModule } from './email/email.module';
 import { UsersModule } from './users/users.module';
@@ -49,7 +49,6 @@ export class AppModule implements NestModule {
     consumer
       .apply(LoggerMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
-
     // Apply auth middleware to all routes EXCEPT auth routes
     // consumer
     //   .apply(AuthMiddleware)

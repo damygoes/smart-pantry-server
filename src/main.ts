@@ -47,17 +47,16 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 
   // Log all registered routes
-  const server = app.getHttpServer();
-  const router = server._events.request._router;
-  console.log('Registered Routes:');
-  router.stack
-    .filter((layer) => layer.route) // Only log layers with routes
-    .forEach((layer) => {
-      console.log(
-        `${Object.keys(layer.route.methods).join(',').toUpperCase()} ${
-          layer.route.path
-        }`,
-      );
-    });
+  // const server = app.getHttpServer();
+  // const router = server._events.request._router;
+  // router.stack
+  //   .filter((layer) => layer.route) // Only log layers with routes
+  //   .forEach((layer) => {
+  //     console.log(
+  //       `${Object.keys(layer.route.methods).join(',').toUpperCase()} ${
+  //         layer.route.path
+  //       }`,
+  //     );
+  //   });
 }
 bootstrap();

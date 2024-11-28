@@ -26,7 +26,13 @@ export class AuthController {
   ) {}
 
   @ApiOperation({ summary: 'Login with email' })
-  @ApiBody({ type: LoginDto })
+  @ApiBody({
+    description: 'Email',
+    schema: {
+      type: 'object',
+      properties: { email: { type: 'string', example: 'test@test.com' } },
+    },
+  })
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Post('login')
@@ -39,6 +45,9 @@ export class AuthController {
   }
 
   // Google login callback
+  @ApiOperation({ summary: 'Google login callback' })
+  @ApiResponse({ status: 200, description: 'Login successful' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   googleLoginCallback(@Req() req, @Res() res) {
@@ -47,7 +56,13 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Verify magic link token' })
-  @ApiBody({ type: VerifyTokenDto })
+  @ApiBody({
+    description: 'Token',
+    schema: {
+      type: 'object',
+      properties: { token: { type: 'string', example: '123' } },
+    },
+  })
   @ApiResponse({ status: 200, description: 'Magic link verified' })
   @ApiResponse({ status: 401, description: 'Invalid or expired token' })
   @Post('verify-magic-link')
@@ -74,6 +89,9 @@ export class AuthController {
     return res.status(HttpStatus.OK).json({ message: 'Login successful' });
   }
 
+  @ApiOperation({ summary: 'Refresh access token' })
+  @ApiResponse({ status: 200, description: 'Access token refreshed' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Post('refresh-token')
   async refreshToken(@Req() req: Request, @Res() res: Response) {
     const refreshToken = this.authService.getRefreshTokenFromCookie(req);
