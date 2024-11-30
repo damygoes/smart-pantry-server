@@ -69,13 +69,16 @@ export class AuthController {
   async verifyMagicLink(@Body() body: VerifyTokenDto, @Res() res: Response) {
     const { token } = body;
 
+    // Verify the token and retrieve the associated user
     const user = await this.authService.verifyMagicLinkToken(token);
+
     if (!user) {
       return res
         .status(HttpStatus.UNAUTHORIZED)
         .json({ message: 'Invalid or expired token' });
     }
 
+    // Generate JWT token for the authenticated user
     const jwtToken = await this.authService.generateJwt(user);
 
     // Set the JWT token in an HTTP-only cookie
@@ -86,7 +89,10 @@ export class AuthController {
       sameSite: 'strict', // Prevent cross-site requests
     });
 
-    return res.status(HttpStatus.OK).json({ message: 'Login successful' });
+    return res.status(HttpStatus.OK).json({
+      message: 'Login successful',
+      user: user,
+    });
   }
 
   @ApiOperation({ summary: 'Refresh access token' })

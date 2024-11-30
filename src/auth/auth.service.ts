@@ -35,6 +35,9 @@ export class AuthService {
     }
 
     const user = await this.userService.getUserByEmail(email);
+    if (!user) {
+      return null; // User not found
+    }
     this.magicLinks.delete(token); // Invalidate the token after use
     return user;
   }
